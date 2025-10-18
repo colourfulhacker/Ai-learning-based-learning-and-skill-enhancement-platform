@@ -26,9 +26,14 @@ export async function POST(req: NextRequest) {
     const subtopic = topic.subtopics?.find((st: any) => st.title === subtopicTitle);
     if (!subtopic) return NextResponse.json({ success: false, message: "Subtopic not found" }, { status: 404 });
 
+    // Get the course language for localized content
+    const courseLang = course.lang || 'English';
+    const langSuffix = courseLang.toLowerCase() !== 'english' ? ` in ${courseLang}` : '';
+    
     // --- 1. Generate YouTube Video (in a safe block) ---
     try {
-      const videoResults = await youtubesearchapi.GetListByKeyword(`${subtopicTitle} tutorial ${topicTitle}`, false, 5, [{ type: "video" }]);
+      const searchQuery = `${subtopicTitle} tutorial ${topicTitle}${langSuffix}`;
+      const videoResults = await youtubesearchapi.GetListByKeyword(searchQuery, false, 5, [{ type: "video" }]);
       if (videoResults.items.length > 0) {
           const videoData = videoResults.items.map((video: any) => ({ id: video.id, title: video.title }));
           const similarities = videoData.map((video: any) => ({ ...video, similarity: compareTwoStrings(`${subtopicTitle} ${topicTitle}`, video.title) }));
@@ -45,8 +50,12 @@ export async function POST(req: NextRequest) {
     // --- 2. Generate Theory with the NEW Markdown-focused prompt ---
     try { 
       const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const languageInstruction = courseLang.toLowerCase() !== 'english' 
+        ? `\n\nIMPORTANT: Provide all content in ${courseLang}. Use ${courseLang} for all explanations, comments, and text. Only code syntax should remain in English as per programming language standards.`
+        : '';
+      
       const prompt = `You are an expert instructor and senior developer creating a lesson for a course.
-      Your task is to provide a comprehensive, clear, and easy-to-follow explanation for the subtopic: "${subtopicTitle}", which is part of the larger topic: "${topicTitle}".
+      Your task is to provide a comprehensive, clear, and easy-to-follow explanation for the subtopic: "${subtopicTitle}", which is part of the larger topic: "${topicTitle}".${languageInstruction}
 
       Your response MUST be formatted in well-structured Markdown and follow this exact lesson plan:
 

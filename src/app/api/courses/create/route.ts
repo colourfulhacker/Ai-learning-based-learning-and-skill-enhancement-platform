@@ -9,7 +9,7 @@ const unsplash = createApi({ accessKey: process.env.UNSPLASH_ACCESS_KEY || "" })
 export async function POST(req: NextRequest) {
   await connectDB();
   try {
-    const { user, content, type, mainTopic } = await req.json();
+    const { user, content, type, mainTopic, lang } = await req.json();
 
     if (!user || !content || !type || !mainTopic) {
       return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
@@ -29,7 +29,14 @@ export async function POST(req: NextRequest) {
       console.error("Unsplash error:", e);
     }
 
-    const newCourse = new Course({ user, content, type, mainTopic, photo });
+    const newCourse = new Course({ 
+      user, 
+      content, 
+      type, 
+      mainTopic, 
+      photo,
+      lang: lang || 'English'
+    });
     await newCourse.save();
 
     return NextResponse.json({ success: true, message: "Course created successfully", courseId: newCourse._id });
