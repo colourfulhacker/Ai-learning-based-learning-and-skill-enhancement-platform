@@ -2,18 +2,13 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function ToastProvider() {
-  const [theme, setTheme] = useState("light");
-
-  // This useEffect safely reads from sessionStorage only on the client
-  useEffect(() => {
-    const storedTheme = sessionStorage.getItem("darkMode");
-    setTheme(storedTheme === "true" ? "dark" : "light");
-  }, []);
+  const { theme: isDarkMode } = useTheme();
+  const theme = isDarkMode ? "dark" : "light";
 
   return (
     <ToastContainer
