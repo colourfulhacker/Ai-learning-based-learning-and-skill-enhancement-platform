@@ -19,13 +19,8 @@ import CourseSidebar from "@/app/components/course/CourseSidebar";
 import CircularProgressBar from "@/app/components/course/CircularProgressBar";
 import MarkdownRenderer from "@/app/components/course/MarkdownRenderer";
 import ChatDrawer from "@/app/components/course/ChatDrawer";
-
-const QuizView = ({ courseTitle }: { courseTitle: string }) => (
-  <div className="p-8 text-center">Quiz for {courseTitle} will be shown here.</div>
-);
-const ProjectsView = ({ courseTitle }: { courseTitle: string }) => (
-  <div className="p-8 text-center">Projects for {courseTitle} will be shown here.</div>
-);
+import QuizView from "@/app/components/course/QuizView";
+import ProjectSuggestionsView from "@/app/components/course/ProjectSuggestionsView";
 
 const CoursePage = () => {
   const router = useRouter();
@@ -434,8 +429,22 @@ const CoursePage = () => {
                   </div>
                 )}
 
-                {view === "quiz" && <QuizView courseTitle={courseData.mainTopic} />}
-                {view === "projects" && <ProjectsView courseTitle={courseData.mainTopic} />}
+                {view === "quiz" && (
+                  <QuizView 
+                    courseId={String(courseId)} 
+                    courseTitle={courseData.mainTopic}
+                    userId={sessionStorage.getItem('uid') || ''}
+                  />
+                )}
+                {view === "projects" && (
+                  <ProjectSuggestionsView
+                    courseId={String(courseId)}
+                    courseTitle={courseData.mainTopic}
+                    userId={courseData.user}
+                    firebaseUId={sessionStorage.getItem('uid') || ''}
+                    userEmail={sessionStorage.getItem('email') || ''}
+                  />
+                )}
               </>
             )}
           </div>
