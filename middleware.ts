@@ -2,29 +2,39 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  // Get the JWT token from the user's cookies
+export async function middleware(request: NextRequest) {
   const token = request.cookies.get('jwt');
   const { pathname } = request.nextUrl;
 
-  // Define which paths are protected
   const protectedPaths = ['/home', '/profile', '/create', '/my-projects', '/course', '/admin'];
 
-  // Redirect to sign-in if trying to access a protected path without a token
   if (protectedPaths.some(path => pathname.startsWith(path)) && !token) {
     const url = request.nextUrl.clone();
     url.pathname = '/signin';
     return NextResponse.redirect(url);
   }
 
-  // If the user is logged in (has a token) and tries to access signin/signup, redirect them to home
-  // if (['/signin', '/signup'].includes(pathname) && token) {
-  //   const url = request.nextUrl.clone();
-  //   url.pathname = '/home';
-  //   return NextResponse.redirect(url);
-  // }
+  if (pathname.startsWith('/admin') && token) {
+    try {
+      const response = await fetch(`${request.nextUrl.origin}/api/admin/verify`, {
+        headers: {
+          Cookie: `jwt=${token.value}`
+        }
+      });
+      
+      if (!response.ok) {
+        const url = request.nextUrl.clone();
+        url.pathname = '/home';
+        return NextResponse.redirect(url);
+      }
+    } catch (error) {
+      console.error('Admin auth check error:', error);
+      const url = request.nextUrl.clone();
+      url.pathname = '/home';
+      return NextResponse.redirect(url);
+    }
+  }
 
-  // Allow the request to proceed
   return NextResponse.next();
 }
 

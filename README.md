@@ -44,16 +44,34 @@ Cehpoint is designed to help users create personalized learning paths using AI. 
 
 ## Features
 
-- **AI Course Generation:** Create custom courses with AI-generated outlines and explanations.
-- **Quiz & Project Integration:** Take quizzes and complete projects for each course.
-- **YouTube & Unsplash Integration:** Embedded videos and images for enhanced learning.
-- **User Authentication:** Secure login/signup, including Google OAuth.
-- **Profile Management:** Update profile, change password, manage API keys.
-- **Performance Analytics:** View heatmaps, scores, and progress.
-- **Dark Mode:** Toggle between light and dark themes.
-- **Admin Dashboard:** Manage users, courses, and platform analytics.
-- **Responsive UI:** Mobile-friendly, modern design.
-- **Toast Notifications:** Real-time feedback for user actions.
+### 🎓 Core Learning Features
+- **AI Course Generation:** Create custom courses with AI-generated outlines and explanations using Google Gemini
+- **AI Quiz Generation:** Automatically generate intelligent quizzes from course content
+- **AI Project Suggestions:** Get personalized project recommendations based on what you've learned
+- **Interactive Learning:** YouTube video integration and Unsplash images for enhanced learning
+- **Progress Tracking:** Track completion, view performance analytics and heatmaps
+
+### 👤 User Features
+- **Secure Authentication:** Email/password and Google OAuth support
+- **Profile Management:** Update profile, change password, manage API keys
+- **Performance Dashboard:** View detailed analytics, quiz scores, and activity heatmaps
+- **Dark Mode:** Beautiful dark/light theme toggle with smooth transitions
+- **Responsive Design:** Fully mobile-friendly, modern UI with animations
+
+### 🛡️ Admin Panel (New!)
+- **Project Management:** Review, approve, or reject user projects with detailed views
+- **User Management:** Manage users, roles, permissions, and view user statistics
+- **Course Management:** View all courses, track completion rates, and manage content
+- **Admin Controls:** Add/remove admin users, manage platform settings
+- **Content Editing:** Edit Terms & Conditions and Privacy Policy directly from the panel
+- **Analytics Dashboard:** Comprehensive platform statistics with beautiful visualizations
+
+### ✨ UI/UX Enhancements (New!)
+- **Enhanced Landing Page:** Gradient text, smooth animations, and modern design
+- **Loading States:** Beautiful skeleton loaders throughout the application
+- **Error Boundaries:** Graceful error handling with helpful recovery options
+- **Custom Animations:** Smooth transitions, hover effects, and micro-interactions
+- **Toast Notifications:** Real-time feedback for all user actions
 
 ---
 
